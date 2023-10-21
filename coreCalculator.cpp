@@ -36,7 +36,10 @@ std::vector<std::string> CoreCalculator::tokenize(const std::string& expression)
 				}
 				tokens.push_back(std::string(1, symbol));
 			}
-			op += symbol;
+			else
+			{
+				op += symbol; 
+			}
 		}
 	}
 
@@ -57,14 +60,28 @@ std::vector<std::string> CoreCalculator::parse(const std::vector<std::string>& t
 		{
 			postfix.push_back(token);
 		}
-		else 
+		else if (token == "(") 
 		{
-			while ((!operationStack.empty()) && (getOperationPriority(token) <= getOperationPriority(operationStack.top())))
+			operationStack.push(token);
+		}
+		else if (token == ")") 
+		{
+			while (operationStack.top() != "(") 
 			{
 				postfix.push_back(operationStack.top());
 				operationStack.pop();
 			}
-			operationStack.push(token);
+			operationStack.pop();
+		}
+		else 
+		{
+				while ((!operationStack.empty()) && operationStack.top() != "(" &&
+					(getOperationPriority(token) <= getOperationPriority(operationStack.top())))
+				{
+					postfix.push_back(operationStack.top());
+					operationStack.pop();
+				}
+				operationStack.push(token);
 		}
 	}
 	while (!operationStack.empty()) 
