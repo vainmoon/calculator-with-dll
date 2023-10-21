@@ -1,17 +1,16 @@
 #pragma once
-#include <string>
-#include "string_parser.h"
+#include "coreCalculator.hpp"
 
 class Calculator
 {
 public:
-	Calculator() = default;
+	Calculator();
 	void launch();
 	void pictureAnswer();
 
 private:
-	StringParser stringParser_;
+	CoreCalculator coreCalculator_;
 	std::string expression_;
-	float answer_;
+	double answer_;
 };
 
